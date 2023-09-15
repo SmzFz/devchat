@@ -11,17 +11,22 @@ const handleKeyPress = (e) => {
 
 const Chat = ({ socket }) => {
   const messageRef = useRef();
-  const [messageBox, setMessagebox] = useState([]);
+  const bottomRef = useRef();
+  const [messageBox, setMessageBox] = useState([]);
 
   useEffect(() => {
     messageRef.current.focus();
     socket.on("receive_message", (data) => {
-      setMessagebox((currente) => {
+      setMessageBox((current) => {
         [...current, data];
       });
     });
     return () => socket.off("receive_message");
   }, [socket]);
+
+  useEffect(() => {
+    bottomRef.current.scrollIntoView({behavior : "smooth"});
+  }, [messageBox])
 
   const messageSubmit = () => {
     const message = messageRef.current.value;
@@ -57,6 +62,7 @@ const Chat = ({ socket }) => {
               <div className={style["message-text"]}>{message.text}</div>
             </div>;
           })}
+          <div ref={bottomRef} />
         </div>
 
         <div className={style["chat-footer"]}>
