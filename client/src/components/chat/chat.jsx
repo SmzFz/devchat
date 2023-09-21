@@ -3,11 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Input } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
-const handleKeyPress = (e) => {
-  if (e.key === "Enter") {
-    console.log("Enter funcionando...");
-  }
-};
+
 
 const Chat = ({ socket }) => {
   const messageRef = useRef();
@@ -17,16 +13,15 @@ const Chat = ({ socket }) => {
   useEffect(() => {
     messageRef.current.focus();
     socket.on("receive_message", (data) => {
-      setMessageBox((current) => {
-        [...current, data];
+      setMessageBox((current) => 
+        [...current, data]);
       });
-    });
     return () => socket.off("receive_message");
   }, [socket]);
 
   useEffect(() => {
-    bottomRef.current.scrollIntoView({behavior : "smooth"});
-  }, [messageBox])
+    bottomRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messageBox]);
 
   const messageSubmit = () => {
     const message = messageRef.current.value;
@@ -50,18 +45,18 @@ const Chat = ({ socket }) => {
     <>
       <div className={style["chat-container"]}>
         <div className={style["chat-body"]}>
-          {messageBox.map((message, index) => {
+          {messageBox.map((message, index) => (
             <div
-              className={`$style["message-container"] ${
-                message.authorID === socket.id && style["message-mine"]
-              }`}
+                className={`${style["message-container"]} 
+                ${message.authorID === socket.id && style["message-mine"]}`}
+              key={index}
             >
               <div className={style["message-author"]}>
                 <strong>{message.author}</strong>
               </div>
               <div className={style["message-text"]}>{message.text}</div>
-            </div>;
-          })}
+            </div>
+          ))}
           <div ref={bottomRef} />
         </div>
 

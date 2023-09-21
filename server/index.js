@@ -11,7 +11,6 @@ const PORT = 3001;
 io.on("connection", (socket) => {
   socket.on("set_username", (username) => {
     socket.data.username = username;
-    //userName(username, socket.id);
 
     console.log(`bem vindo ${username}! seu id é ${socket.id}!`);
   });
